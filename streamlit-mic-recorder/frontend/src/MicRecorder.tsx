@@ -33,19 +33,30 @@ class MicRecorder extends StreamlitComponentBase<State> {
         ///console.log("Component mounted")
     }
 
+    getButtonStyle = (Theme:any):React.CSSProperties => {
+        const baseBorderColor = tinycolor.mix(Theme.textColor, Theme.backgroundColor, 80).lighten(2).toString();
+        const backgroundColor = tinycolor.mix(Theme.textColor, tinycolor.mix(Theme.primaryColor, Theme.backgroundColor, 99), 99).lighten(0.5).toString();
+        const textColor = this.state.isHovered ? Theme.primaryColor : Theme.textColor;
+        const borderColor = this.state.isHovered ? Theme.primaryColor : baseBorderColor;
+        
+        return {
+            ...this.props.args["use_container_width"] ? { width: '100%' } : {},
+            borderColor: borderColor,
+            backgroundColor: backgroundColor,
+            color: textColor
+        };
+    }
+
     public render(): React.ReactNode {
         //console.log("Component renders");
-        const Theme = this.props.theme??{base:'dark',backgroundColor:'black',secondaryBackgroundColor:'grey',primaryColor:'red',textColor:'white'};
-        const baseBorderColor = tinycolor.mix(Theme.textColor,Theme.backgroundColor,80).lighten(2).toString();
-        const backgroundColor = tinycolor.mix(Theme.textColor,tinycolor.mix(Theme.primaryColor,Theme.backgroundColor,99),99).lighten(0.5).toString();
-        const textColor=this.state.isHovered ? Theme.primaryColor : Theme.textColor;
-        const borderColor=this.state.isHovered ? Theme.primaryColor : baseBorderColor ;
-        const buttonStyle = {
-            ...this.props.args["use_container_width"] ? { width: '100%' } : {},
-            borderColor:borderColor,
-            backgroundColor:backgroundColor,
-            color:textColor
-        }
+        const Theme = this.props.theme ?? {
+            base: 'dark',
+            backgroundColor: 'black',
+            secondaryBackgroundColor: 'grey',
+            primaryColor: 'red',
+            textColor: 'white'
+        };
+        const buttonStyle = this.getButtonStyle(Theme);
         return (
             <div className="App">
                 {this.state.recording ? (
