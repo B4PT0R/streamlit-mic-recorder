@@ -2,9 +2,11 @@ import React from 'react';
 import { StreamlitComponentBase, Streamlit, withStreamlitConnection } from 'streamlit-component-lib';
 import toWav from 'audiobuffer-to-wav';
 import './styles.css';
+import tinycolor from 'tinycolor2'
 
 interface State {
     recording: boolean;
+    isHovered: boolean;
 }
 
 class MicRecorder extends StreamlitComponentBase<State> {
@@ -14,8 +16,17 @@ class MicRecorder extends StreamlitComponentBase<State> {
     private output?:object;
 
     public state: State = {
-        recording: false
+        recording: false,
+        isHovered:false,
     };
+
+    handleMouseEnter = () => {
+        this.setState({ isHovered: true });
+    }
+    
+    handleMouseLeave = () => {
+        this.setState({ isHovered: false });
+    }
 
     public componentDidMount(): void {
         super.componentDidMount()
@@ -24,16 +35,39 @@ class MicRecorder extends StreamlitComponentBase<State> {
 
     public render(): React.ReactNode {
         //console.log("Component renders");
-        const Theme = this.props.theme??{base:'light'};
+        const Theme = this.props.theme??{base:'dark',backgroundColor:'black',secondaryBackgroundColor:'grey',primaryColor:'red',textColor:'white'};
+        const baseBorderColor = tinycolor.mix(Theme.textColor,Theme.backgroundColor,80).lighten(2).toString();
+        const backgroundColor = tinycolor.mix(Theme.textColor,tinycolor.mix(Theme.primaryColor,Theme.backgroundColor,99),99).lighten(0.5).toString();
+        const textColor=this.state.isHovered ? Theme.primaryColor : Theme.textColor;
+        const borderColor=this.state.isHovered ? Theme.primaryColor : baseBorderColor ;
         const buttonStyle = {
             ...this.props.args["use_container_width"] ? { width: '100%' } : {},
+            borderColor:borderColor,
+            backgroundColor:backgroundColor,
+            color:textColor
         }
         return (
             <div className="App">
                 {this.state.recording ? (
-                    <button className="myButton" style={buttonStyle} onClick={this.stopRecording}>{this.props.args["stop_prompt"]}</button>
+                    <button 
+                        className="myButton" 
+                        style={buttonStyle} 
+                        onClick={this.stopRecording}
+                        onMouseEnter={this.handleMouseEnter}
+                        onMouseLeave={this.handleMouseLeave}
+                    >
+                        {this.props.args["stop_prompt"]}
+                    </button>
                 ) : (
-                    <button className="myButton" style={buttonStyle} onClick={this.startRecording}>{this.props.args["start_prompt"]}</button>
+                    <button 
+                        className="myButton" 
+                        style={buttonStyle} 
+                        onClick={this.startRecording}
+                        onMouseEnter={this.handleMouseEnter}
+                        onMouseLeave={this.handleMouseLeave}
+                    >
+                        {this.props.args["start_prompt"]}
+                    </button>
                 )}
             </div>
         );

@@ -6,7 +6,8 @@
     "audiobuffer-to-wav": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "streamlit-component-lib": "^2.0.0"
+    "streamlit-component-lib": "^2.0.0",
+    "tinycolor2": "^1.6.0"
   },
   "scripts": {
     "start": "react-scripts start",
