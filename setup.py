@@ -13,7 +13,7 @@ setuptools.setup(
     description="Streamlit component that allows to record mono audio from the user's microphone, and/or perform speech recognition directly.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="",
+    url="https://github.com/B4PT0R/streamlit-mic-recorder",
     packages=setuptools.find_packages(),
     include_package_data=True,
     classifiers=[],

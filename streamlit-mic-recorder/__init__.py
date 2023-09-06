@@ -14,14 +14,14 @@ if not _RELEASE:
     _component_func = components.declare_component("streamlit-mic-recorder",url="http://localhost:3001")
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
-    build_dir = os.path.join(parent_dir, "frontend-react/build")
-    _component_func = components.declare_component("streamlit-mic_recorder", path=build_dir)
+    build_dir = os.path.join(parent_dir, "frontend/build")
+    _component_func = components.declare_component("streamlit-mic-recorder", path=build_dir)
 
 if not os.path.exists(rootjoin('data.json')):
     with open(rootjoin('data.json'),'w') as f:
         json.dump({'id':0},f)
 
-def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",just_once=True,use_container_width=False,key=None):
+def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",just_once=False,use_container_width=False,key=None):
     component_value = _component_func(start_prompt=start_prompt,stop_prompt=stop_prompt,use_container_width=use_container_width,key=key,default=None)
     if component_value is None:
         return None
@@ -40,7 +40,7 @@ def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",jus
         else: 
             return None
     
-def speech_to_text(start_prompt="Start recording",stop_prompt="Stop recording",just_once=True,use_container_width=False,language='en',key=None):
+def speech_to_text(start_prompt="Start recording",stop_prompt="Stop recording",just_once=False,use_container_width=False,language='en',key=None):
     audio = mic_recorder(start_prompt=start_prompt,stop_prompt=stop_prompt,just_once=just_once,use_container_width=use_container_width,key=key)
     if audio is None:
         return None
@@ -62,14 +62,11 @@ if not _RELEASE:
     if 'text_received' not in state:
         state.text_received=[]
 
-    if 'audio_received' not in state:
-        state.audio_received=[]
-
-    st.button('st.button for style reference')
-
-    st.write("Record your voice, and print STT response.")
-    with st.container():
-        text=speech_to_text(start_prompt="⏺️",stop_prompt="⏹️",language='fr',use_container_width=True,key='STT')
+    c1,c2=st.columns(2)
+    with c1:
+        st.write("Convert speech to text:")
+    with c2:
+        text=speech_to_text(language='en',use_container_width=True,just_once=True,key='STT')
     
     if text:       
         state.text_received.append(text)
@@ -77,14 +74,11 @@ if not _RELEASE:
     for text in state.text_received:
         st.text(text)
     
-    st.write("Record your voice, and play the recorded audio.")
-    audio=mic_recorder(key='recorder')
+    st.write("Record your voice, and play the recorded audio:")
+    audio=mic_recorder(start_prompt="⏺️",stop_prompt="⏹️",key='recorder')
 
     if audio:       
-        state.audio_received.append(audio)
-
-    for audio in state.audio_received:
-        st.audio(audio['bytes'], format="audio/wav")
+        st.audio(audio['bytes'])
     
 
 
