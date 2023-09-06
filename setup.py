@@ -6,7 +6,7 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
-    name="streamlit-mic-recorder",
+    name="streamlit_mic_recorder",
     version="0.0.1",
     author="Baptiste Ferrand",
     author_email="bferrand.math@gmail.com",

@@ -1,1 +1,1 @@
-recursive-include streamlit-mic-recorder/frontend/build *
+recursive-include streamlit_mic_recorder/frontend/build *

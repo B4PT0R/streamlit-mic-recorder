@@ -8,14 +8,14 @@ _root_=os.path.dirname(os.path.abspath(__file__))
 def rootjoin(*args):
     return os.path.join(_root_,*args)
 
-_RELEASE = False
+_RELEASE = True
 
 if not _RELEASE:
-    _component_func = components.declare_component("streamlit-mic-recorder",url="http://localhost:3001")
+    _component_func = components.declare_component("streamlit_mic_recorder",url="http://localhost:3001")
 else:
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend/build")
-    _component_func = components.declare_component("streamlit-mic-recorder", path=build_dir)
+    _component_func = components.declare_component("streamlit_mic_recorder", path=build_dir)
 
 if not os.path.exists(rootjoin('data.json')):
     with open(rootjoin('data.json'),'w') as f:
@@ -55,7 +55,7 @@ def speech_to_text(start_prompt="Start recording",stop_prompt="Stop recording",j
 
 if not _RELEASE:
     import streamlit as st
-    #from streamlit-mic-recorder import mic_recorder,speech_to_text
+    #from streamlit_mic_recorder import mic_recorder,speech_to_text
     
     state=st.session_state
 
