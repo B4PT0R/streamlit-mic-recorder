@@ -30,7 +30,7 @@ Renders a button. Click to start recording, click to stop. Returns None or a dic
     "sample_width":sample_width # 2
 }
 ```
-sample_rate and sampe_width are provided in case you need them for further audio processing.
+sample_rate and sample_width are provided in case you need them for further audio processing.
 
 Arguments:
 - start/stop_prompt, the prompts appearing on the button depending on its recording state.
@@ -48,7 +48,7 @@ text=speech_to_text(
     key=None
 )
 ```
-Renders a button. Click to start recording, click to stop. Returns None or or a text transcription of the recorded speech in the chosen language. 
+Renders a button. Click to start recording, click to stop. Returns None or a text transcription of the recorded speech in the chosen language. 
 
 ## Example
 
