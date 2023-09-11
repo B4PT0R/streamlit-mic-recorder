@@ -1,10 +1,13 @@
 Metadata-Version: 2.1
 Name: streamlit-mic-recorder
-Version: 0.0.1
+Version: 0.0.2
 Summary: Streamlit component that allows to record mono audio from the user's microphone, and/or perform speech recognition directly.
 Home-page: https://github.com/B4PT0R/streamlit-mic-recorder
 Author: Baptiste Ferrand
 Author-email: bferrand.math@gmail.com
+Classifier: streamlit
+Classifier: audio
+Classifier: STT
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
@@ -28,7 +31,7 @@ Two functions are provided (with the same front-end):
 audio=mic_recorder(
     start_prompt="Start recording",
     stop_prompt="Stop recording", 
-    just_once=True,
+    just_once=False,
     use_container_width=False,
     key=None
 )
@@ -41,7 +44,7 @@ Renders a button. Click to start recording, click to stop. Returns None or a dic
     "sample_width":sample_width # 2
 }
 ```
-sample_rate and sampe_width are provided in case you need them for further audio processing.
+sample_rate and sample_width are provided in case you need them for further audio processing.
 
 Arguments:
 - start/stop_prompt, the prompts appearing on the button depending on its recording state.
@@ -54,18 +57,18 @@ text=speech_to_text(
     language='en',
     start_prompt="Start recording",
     stop_prompt="Stop recording", 
-    just_once=True,
+    just_once=False,
     use_container_width=False,
     key=None
 )
 ```
-Renders a button. Click to start recording, click to stop. Returns None or or a text transcription of the recorded speech in the chosen language. 
+Renders a button. Click to start recording, click to stop. Returns None or a text transcription of the recorded speech in the chosen language. 
 
 ## Example
 
 ```python
 import streamlit as st
-from streamlit-mic-recorder import mic_recorder,speech_to_text
+from streamlit_mic_recorder import mic_recorder,speech_to_text
 
 state=st.session_state
 
