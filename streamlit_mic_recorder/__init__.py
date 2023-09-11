@@ -1,14 +1,15 @@
 import os
-import json
+import streamlit as st
 import streamlit.components.v1 as components
 import base64
 from speech_recognition import Recognizer,AudioData
-_root_=os.path.dirname(os.path.abspath(__file__))
-
-def rootjoin(*args):
-    return os.path.join(_root_,*args)
 
 _RELEASE = True
+
+state=st.session_state
+
+if not '_last_audio_id' in state:
+    state._last_audio_id=0
 
 if not _RELEASE:
     _component_func = components.declare_component("streamlit_mic_recorder",url="http://localhost:3001")
@@ -17,25 +18,17 @@ else:
     build_dir = os.path.join(parent_dir, "frontend/build")
     _component_func = components.declare_component("streamlit_mic_recorder", path=build_dir)
 
-if not os.path.exists(rootjoin('data.json')):
-    with open(rootjoin('data.json'),'w') as f:
-        json.dump({'id':0},f)
-
 def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",just_once=False,use_container_width=False,key=None):
     component_value = _component_func(start_prompt=start_prompt,stop_prompt=stop_prompt,use_container_width=use_container_width,key=key,default=None)
     if component_value is None:
         return None
     else:
-        with open(rootjoin('data.json'),'r') as f:
-            data=json.load(f)
         id=component_value["id"]
         audio_bytes=base64.b64decode(component_value["audio_base64"])
         sample_rate=component_value["sample_rate"]
         sample_width=component_value["sample_width"]
-        if id>data['id'] or just_once==False:
-            data['id']=id
-            with open(rootjoin('data.json'),'w') as f:
-                json.dump(data,f)
+        if id>state._last_audio_id or just_once==False:
+            state._last_audio_id=id
             return {"bytes":audio_bytes,"sample_rate":sample_rate,"sample_width":sample_width}
         else: 
             return None
