@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "audio-recorder-polyfill": "^0.4.1",
     "audiobuffer-to-wav": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

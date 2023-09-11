@@ -17,7 +17,7 @@ Two functions are provided (with the same front-end):
 audio=mic_recorder(
     start_prompt="Start recording",
     stop_prompt="Stop recording", 
-    just_once=True,
+    just_once=False,
     use_container_width=False,
     key=None
 )
@@ -43,7 +43,7 @@ text=speech_to_text(
     language='en',
     start_prompt="Start recording",
     stop_prompt="Stop recording", 
-    just_once=True,
+    just_once=False,
     use_container_width=False,
     key=None
 )
@@ -54,7 +54,7 @@ Renders a button. Click to start recording, click to stop. Returns None or a tex
 
 ```python
 import streamlit as st
-from streamlit-mic-recorder import mic_recorder,speech_to_text
+from streamlit_mic_recorder import mic_recorder,speech_to_text
 
 state=st.session_state
 
