@@ -5,9 +5,6 @@ Summary: Streamlit component that allows to record mono audio from the user's mi
 Home-page: https://github.com/B4PT0R/streamlit-mic-recorder
 Author: Baptiste Ferrand
 Author-email: bferrand.math@gmail.com
-Classifier: streamlit
-Classifier: audio
-Classifier: STT
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
