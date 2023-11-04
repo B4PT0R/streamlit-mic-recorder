@@ -16,6 +16,8 @@ else:
 def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",just_once=False,use_container_width=False,callback=None,args=(),kwargs={},key=None):
     if not '_last_mic_recorder_audio_id' in st.session_state:
         st.session_state._last_mic_recorder_audio_id=0
+    if key and not key+'_output' in st.session_state:
+        st.session_state[key+'_output']=None
     new_output=False
     component_value = _component_func(start_prompt=start_prompt,stop_prompt=stop_prompt,use_container_width=use_container_width,key=key,default=None)
     if component_value is None:
@@ -32,7 +34,7 @@ def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",jus
         else:
             output=None
     if key:
-        st.session_state[key]=output
+        st.session_state[key+'_output']=output
     if new_output and callback:
         callback(*args,**kwargs)
     return output
@@ -40,6 +42,8 @@ def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",jus
 def speech_to_text(start_prompt="Start recording",stop_prompt="Stop recording",just_once=False,use_container_width=False,language='en',callback=None,args=(),kwargs={},key=None):
     if not '_last_speech_to_text_transcript_id' in st.session_state:
         st.session_state._last_speech_to_text_transcript_id=0
+    if key and not key+'_output' in st.session_state:
+        st.session_state[key+'_output']=None
     audio = mic_recorder(start_prompt=start_prompt,stop_prompt=stop_prompt,just_once=just_once,use_container_width=use_container_width,key=key)
     new_output=False
     if audio is None:
@@ -56,7 +60,7 @@ def speech_to_text(start_prompt="Start recording",stop_prompt="Stop recording",j
             except:
                 output=None
     if key:
-        st.session_state[key]=output
+        st.session_state[key+'_output']=output
     if new_output and callback:
         callback(*args,**kwargs)
     return output
