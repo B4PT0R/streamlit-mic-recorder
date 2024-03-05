@@ -137,7 +137,8 @@ class MicRecorder extends StreamlitComponentBase<State> {
                     this.output = {
                         id: Date.now(),
                         audio_base64: base64String,
-                        // Other metadata as needed
+                        sample_rate: "???",
+                        sample_width: "???"
                     };
                     resolve();
                 };
