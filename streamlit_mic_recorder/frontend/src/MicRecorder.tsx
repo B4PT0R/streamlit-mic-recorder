@@ -128,6 +128,10 @@ class MicRecorder extends StreamlitComponentBase<State> {
         return new Promise<void>(async (resolve) => {
         
             const audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType || 'audio/webm' });
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await audioBlob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const sampleRate = audioBuffer.sampleRate;
 
             // For WebM, you can directly prepare the data to send
             if (this.props.args['format'] === 'webm') {
@@ -137,21 +141,15 @@ class MicRecorder extends StreamlitComponentBase<State> {
                     this.output = {
                         id: Date.now(),
                         audio_base64: base64String,
-                        sample_rate: "???",
-                        sample_width: "???"
+                        sample_rate: sampleRate,
+                        sample_width: 2
                     };
                     resolve();
                 };
                 reader.readAsDataURL(audioBlob);
             } else if (this.props.args['format'] === 'wav') {
 
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const arrayBuffer = await audioBlob.arrayBuffer();
-                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-                const sampleRate = audioBuffer.sampleRate;
-
                 const wav: ArrayBuffer = toWav(audioBuffer);
-
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64String = reader.result?.toString().split(',')[1];
