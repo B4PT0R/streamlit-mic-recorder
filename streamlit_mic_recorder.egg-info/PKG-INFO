@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: streamlit-mic-recorder
-Version: 0.0.4
+Name: streamlit_mic_recorder
+Version: 0.0.5
 Summary: Streamlit component that allows to record mono audio from the user's microphone, and/or perform speech recognition directly.
 Home-page: https://github.com/B4PT0R/streamlit-mic-recorder
 Author: Baptiste Ferrand
@@ -8,6 +8,8 @@ Author-email: bferrand.math@gmail.com
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: streamlit>=0.63
+Requires-Dist: SpeechRecognition
 
 # streamlit-mic-recorder
 

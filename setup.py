@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
     name="streamlit_mic_recorder",
-    version="0.0.4",
+    version="0.0.5",
     author="Baptiste Ferrand",
     author_email="bferrand.math@gmail.com",
     description="Streamlit component that allows to record mono audio from the user's microphone, and/or perform speech recognition directly.",

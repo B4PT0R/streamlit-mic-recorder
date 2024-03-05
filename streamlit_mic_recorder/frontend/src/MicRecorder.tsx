@@ -17,7 +17,7 @@ class MicRecorder extends StreamlitComponentBase<State> {
 
     public state: State = {
         recording: false,
-        isHovered:false,
+        isHovered: false,
     };
 
     private handleMouseEnter = () => {
@@ -126,30 +126,46 @@ class MicRecorder extends StreamlitComponentBase<State> {
     private processRecording = async () => {
         //console.log("Component processing the recording...");
         return new Promise<void>(async (resolve) => {
-
+        
             const audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType || 'audio/webm' });
 
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const arrayBuffer = await audioBlob.arrayBuffer();
-            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-            const sampleRate = audioBuffer.sampleRate;
-
-            const wav: ArrayBuffer = toWav(audioBuffer);
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result?.toString().split(',')[1];
-                const dataToSend = {
-                    id:Date.now(),
-                    audio_base64: base64String,
-                    sample_rate: sampleRate,
-                    sample_width: 2
+            // For WebM, you can directly prepare the data to send
+            if (this.props.args['format'] === 'webm') {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result?.toString().split(',')[1];
+                    this.output = {
+                        id: Date.now(),
+                        audio_base64: base64String,
+                        // Other metadata as needed
+                    };
+                    resolve();
                 };
-                this.output = dataToSend;
-                resolve();
+                reader.readAsDataURL(audioBlob);
+            } else if (this.props.args['format'] === 'wav') {
+
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const arrayBuffer = await audioBlob.arrayBuffer();
+                const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                const sampleRate = audioBuffer.sampleRate;
+
+                const wav: ArrayBuffer = toWav(audioBuffer);
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const base64String = reader.result?.toString().split(',')[1];
+                    const dataToSend = {
+                        id:Date.now(),
+                        audio_base64: base64String,
+                        sample_rate: sampleRate,
+                        sample_width: 2
+                    };
+                    this.output = dataToSend;
+                    resolve();
+                };
+                reader.readAsDataURL(new Blob([wav], { type: 'audio/wav' }));
             };
-            reader.readAsDataURL(new Blob([wav], { type: 'audio/wav' }));
-        });
+        }); 
     };
 
     private sendDataToStreamlit = () => {
