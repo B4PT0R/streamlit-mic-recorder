@@ -13,6 +13,6 @@ streamlit_mic_recorder/frontend/build/bootstrap.min.css
 streamlit_mic_recorder/frontend/build/index.html
 streamlit_mic_recorder/frontend/build/static/css/main.27af0a20.css
 streamlit_mic_recorder/frontend/build/static/css/main.27af0a20.css.map
-streamlit_mic_recorder/frontend/build/static/js/main.7d07c2c9.js
-streamlit_mic_recorder/frontend/build/static/js/main.7d07c2c9.js.LICENSE.txt
-streamlit_mic_recorder/frontend/build/static/js/main.7d07c2c9.js.map
+streamlit_mic_recorder/frontend/build/static/js/main.c5edc685.js
+streamlit_mic_recorder/frontend/build/static/js/main.c5edc685.js.LICENSE.txt
+streamlit_mic_recorder/frontend/build/static/js/main.c5edc685.js.map
