@@ -140,6 +140,7 @@ class MicRecorder extends StreamlitComponentBase<State> {
                     const base64String = reader.result?.toString().split(',')[1];
                     this.output = {
                         id: Date.now(),
+                        format:"webm",
                         audio_base64: base64String,
                         sample_rate: sampleRate,
                         sample_width: 2
@@ -153,13 +154,13 @@ class MicRecorder extends StreamlitComponentBase<State> {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64String = reader.result?.toString().split(',')[1];
-                    const dataToSend = {
+                    this.output = {
                         id:Date.now(),
+                        format:"wav",
                         audio_base64: base64String,
                         sample_rate: sampleRate,
                         sample_width: 2
                     };
-                    this.output = dataToSend;
                     resolve();
                 };
                 reader.readAsDataURL(new Blob([wav], { type: 'audio/wav' }));

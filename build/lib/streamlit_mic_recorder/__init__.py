@@ -29,7 +29,8 @@ def mic_recorder(start_prompt="Start recording",stop_prompt="Stop recording",jus
             audio_bytes=base64.b64decode(component_value["audio_base64"])
             sample_rate=component_value["sample_rate"]
             sample_width=component_value["sample_width"]
-            output={"bytes":audio_bytes,"sample_rate":sample_rate,"sample_width":sample_width,"id":id}
+            format=component_value["format"]
+            output={"bytes":audio_bytes,"sample_rate":sample_rate,"sample_width":sample_width,"format":format,"id":id}
             st.session_state._last_mic_recorder_audio_id=id
         else:
             output=None
