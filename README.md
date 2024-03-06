@@ -219,8 +219,8 @@ if text:
 
 ## Changelog
 
-6 march 2024: Added the possibility to choose the file format of the audio sample coming from the frontend.
-- "webm" : compressed / low latency / natively supported by most browsers and Whisper API. 
-- "wav" : slower / supported by most STT engines.
+- 6 march 2024 : Added the possibility to choose the file format of the audio sample coming from the frontend.
+    - "webm" : compressed / low latency / natively supported by most browsers and Whisper API. 
+    - "wav" : slower / supported by most STT engines.
 
-Planning to add support for more audio file formats (mp3, ...)
+    Planning to add support for more audio file formats (mp3, ...)
