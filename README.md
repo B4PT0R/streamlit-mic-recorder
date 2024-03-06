@@ -34,7 +34,7 @@ Renders a button. Click to start recording, click to stop. Returns None or a dic
 
 ```python
 {
-    "bytes": audio_bytes,  # wav audio bytes mono signal, can be processed directly by st.audio
+    "bytes": audio_bytes,  # audio bytes mono signal, can be processed directly by st.audio
     "sample_rate": sample_rate,  # depends on your browser's audio configuration
     "sample_width": sample_width,  # 2
     "format": "webm", # The file format of the audio sample
@@ -219,7 +219,8 @@ if text:
 
 ## Changelog
 
-6 march 2024: Added the possibility to choose the file format of the audio sample coming from the frontend :
-    - "webm" : compressed / low latency / natively supported by most browsers and Whisper API 
-    - "wav" : slower / supported by most STT engines
-    planning to add support for more audio file formats (mp3, ...)
+6 march 2024: Added the possibility to choose the file format of the audio sample coming from the frontend.
+- "webm" : compressed / low latency / natively supported by most browsers and Whisper API. 
+- "wav" : slower / supported by most STT engines.
+
+Planning to add support for more audio file formats (mp3, ...)
