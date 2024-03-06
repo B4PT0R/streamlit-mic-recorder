@@ -22,6 +22,7 @@ audio = mic_recorder(
     stop_prompt="Stop recording",
     just_once=False,
     use_container_width=False,
+    format="webm",
     callback=None,
     args=(),
     kwargs={},
@@ -36,6 +37,7 @@ Renders a button. Click to start recording, click to stop. Returns None or a dic
     "bytes": audio_bytes,  # wav audio bytes mono signal, can be processed directly by st.audio
     "sample_rate": sample_rate,  # depends on your browser's audio configuration
     "sample_width": sample_width,  # 2
+    "format": "webm", # The file format of the audio sample
     "id": id  # A unique timestamp identifier of the audio
 }
 ```
@@ -48,6 +50,7 @@ Arguments:
 - 'just_once' determines if the widget returns the audio only once just after it has been recorded (and then None), or
   on every rerun of the app. Useful to avoid reprocessing the same audio twice.
 - 'use_container_width' just like for st.button, determines if the button fills its container width or not.
+- 'format': The desired file format of the audio sample (can be either "webm" or "wav") 
 - 'callback': an optional callback being called when a new audio is received
 - 'args/kwargs': optional args and kwargs passed to the callback when triggered
 
@@ -142,20 +145,18 @@ For those interested in using the mic recorder component with Whisper here is th
 for me.
 
 ```python
-# whisper.py
+# whisper_stt.py
 
 from streamlit_mic_recorder import mic_recorder
 import streamlit as st
 import io
 from openai import OpenAI
-import dotenv
 import os
 
 
 def whisper_stt(openai_api_key=None, start_prompt="Start recording", stop_prompt="Stop recording", just_once=False,
                use_container_width=False, language=None, callback=None, args=(), kwargs=None, key=None):
     if not 'openai_client' in st.session_state:
-        dotenv.load_dotenv()
         st.session_state.openai_client = OpenAI(api_key=openai_api_key or os.getenv('OPENAI_API_KEY'))
     if not '_last_speech_to_text_transcript_id' in st.session_state:
         st.session_state._last_speech_to_text_transcript_id = 0
@@ -164,7 +165,7 @@ def whisper_stt(openai_api_key=None, start_prompt="Start recording", stop_prompt
     if key and not key + '_output' in st.session_state:
         st.session_state[key + '_output'] = None
     audio = mic_recorder(start_prompt=start_prompt, stop_prompt=stop_prompt, just_once=just_once,
-                         use_container_width=use_container_width, key=key)
+                         use_container_width=use_container_width,format="webm", key=key)
     new_output = False
     if audio is None:
         output = None
@@ -175,7 +176,7 @@ def whisper_stt(openai_api_key=None, start_prompt="Start recording", stop_prompt
             output = None
             st.session_state._last_speech_to_text_transcript_id = id
             audio_bio = io.BytesIO(audio['bytes'])
-            audio_bio.name = 'audio.mp3'
+            audio_bio.name = 'audio.webm'
             success = False
             err = 0
             while not success and err < 3:  # Retry up to 3 times in case of OpenAI server error.
@@ -210,8 +211,15 @@ Usage:
 import streamlit as st
 from whisper import whisper_stt
 
-text = whisper_stt(
-    openai_api_key="<your_api_key>", language = 'en')  # If you don't pass an API key, the function will attempt to load a .env file in the current directory and retrieve it as an environment variable : 'OPENAI_API_KEY'.
+text = whisper_stt(openai_api_key="<your_api_key>", language = 'en')  
+# If you don't pass an API key, the function will attempt to retrieve it as an environment variable : 'OPENAI_API_KEY'.
 if text:
     st.write(text)
 ```
+
+## Changelog
+
+6 march 2024: Added the possibility to choose the file format of the audio sample coming from the frontend :
+    - "webm" : compressed / low latency / natively supported by most browsers and Whisper API 
+    - "wav" : slower / supported by most STT engines
+    planning to add support for more audio file formats (mp3, ...)
