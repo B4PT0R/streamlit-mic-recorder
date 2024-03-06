@@ -209,7 +209,7 @@ Usage:
 
 ```python
 import streamlit as st
-from whisper import whisper_stt
+from whisper_stt import whisper_stt
 
 text = whisper_stt(openai_api_key="<your_api_key>", language = 'en')  
 # If you don't pass an API key, the function will attempt to retrieve it as an environment variable : 'OPENAI_API_KEY'.
